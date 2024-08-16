@@ -1,15 +1,20 @@
 import Arquivo.Arquivo;
-import Arquivo.Registro;
+import Lista.Lista;
+import MatrizAdjacencia.MatrizAdjacencia;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Registro registro = Arquivo.lerArquivo("C:/Users/Aluno/IdeaProjects/Grafos/src/matriz.txt");
-        System.out.println("Matriz de Adjacência");
-        System.out.println(registro.toString());
+        Arquivo arquivo = new Arquivo("D:/graphs_adjacency-matrix-master/graphs_adjacency-matrix-master/src/matriz.txt");
+//        MatrizAdjacencia matriz = arquivo.lerArquivoParaMatriz();
+//        System.out.println("Matriz de Adjacência");
+//        System.out.println(matriz.toString());
+//
+//        matriz.analise();
 
-        registro.analise();
-
+        ArrayList<Lista> lista = arquivo.lerArquivoParaLista();
+        lista.forEach((l) -> l.imprimir());
     }
 }
