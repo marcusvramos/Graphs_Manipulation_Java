@@ -20,6 +20,14 @@ public class Lista {
         }
     }
 
+    public No getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(char info) {
+        inicio = new No(info);
+    }
+
     public void imprimir() {
         No atual = inicio;
         while (atual != null) {

@@ -13,10 +13,6 @@ public class No {
         return info;
     }
 
-    public void setInfo(char info) {
-        this.info = info;
-    }
-
     public No getProx() {
         return prox;
     }

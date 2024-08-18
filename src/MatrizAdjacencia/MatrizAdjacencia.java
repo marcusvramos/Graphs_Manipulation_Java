@@ -1,17 +1,16 @@
 package MatrizAdjacencia;
 
+import Lista.Lista;
+import java.util.ArrayList;
+
 public class MatrizAdjacencia {
 
-    private String[] vertices;
-    private int[][] matrizAdjacencia;
+    private final String[] vertices;
+    private final int[][] matrizAdjacencia;
 
     public MatrizAdjacencia(String[] vertices, int[][] matrizAdjacencia) {
         this.vertices = vertices;
         this.matrizAdjacencia = matrizAdjacencia;
-    }
-
-    public int[][] getMatrizAdjacencia() {
-        return matrizAdjacencia;
     }
 
     @Override
@@ -25,9 +24,7 @@ public class MatrizAdjacencia {
         sb.append("\n");
 
         sb.append("   ");
-        for (int i = 0; i < vertices.length; i++) {
-            sb.append("----");
-        }
+        sb.append("----".repeat(vertices.length));
         sb.append("\n");
 
         for (int i = 0; i < matrizAdjacencia.length; i++) {
@@ -39,6 +36,25 @@ public class MatrizAdjacencia {
         }
 
         return sb.toString();
+    }
+
+    public ArrayList<Lista> transformarEmLista() {
+        ArrayList<Lista> listaAdjacencia = new ArrayList<>();
+
+        for (int i = 0; i < vertices.length; i++) {
+            Lista lista = new Lista();
+            for (int j = 0; j < vertices.length; j++) {
+                if (matrizAdjacencia[i][j] == 1) {
+                    if (lista.getInicio() == null) {
+                        lista.setInicio(vertices[i].charAt(0));
+                    }
+                    lista.inserir(vertices[j].charAt(0));
+                }
+            }
+            listaAdjacencia.add(lista);
+        }
+
+        return listaAdjacencia;
     }
 
     private boolean ehSimples(){
