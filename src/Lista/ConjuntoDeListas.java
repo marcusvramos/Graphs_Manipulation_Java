@@ -20,9 +20,9 @@ public class ConjuntoDeListas {
         for (int i = 0; i < numVertices; i++) {
             Lista lista = listas.get(i);
             No atual = lista.getInicio();
-            while (atual.getProx() != null) {
-                int j = encontrarIndiceVertice(atual.getProx().getInfo());
-                matrizAdjacencia[i][j] = 1;
+            while (atual != null) {
+                int j = encontrarIndiceVertice(atual.getInfo());
+                matrizAdjacencia[i][j] = atual.getValor();
                 atual = atual.getProx();
             }
         }
@@ -80,32 +80,62 @@ public class ConjuntoDeListas {
     }
 
     private boolean ehRegularOrigem() {
-        int grauPadrao = -1;
+        int grauPadraoContagem = -1, grauPadraoValor = -1;
         for (Lista lista : listas) {
-            int contador = 0;
+            int contador = 0, contadorValor = 0;
             No atual = lista.getInicio();
             while (atual != null) {
                 contador++;
+                contadorValor += atual.getValor();
                 atual = atual.getProx();
             }
-            if (grauPadrao == -1) {
-                grauPadrao = contador;
-            } else if (contador != grauPadrao) {
+            if (grauPadraoContagem == -1) {
+                grauPadraoContagem = contador;
+            }
+            if (grauPadraoValor == -1) {
+                grauPadraoValor = contadorValor;
+            }
+            else if (contador != grauPadraoContagem || contadorValor != grauPadraoValor) {
                 return false;
             }
         }
         return true;
     }
 
+    private boolean ehRegularDestino() {
+        int grauPadraoContagem = -1, grauPadraoValor = -1;
+        for (String vertex : vertices) {
+            int contador = 0, contadorValor = 0;
+            for (Lista lista : listas) {
+                if (lista.getInicio().getInfo() != vertex.charAt(0)){
+                    int conexao = valorConexao(lista, vertex.charAt(0));
+                    contador ++;
+                    contadorValor += conexao;
+                }
+            }
+            if (grauPadraoContagem == -1) {
+                grauPadraoContagem = contador;
+            }
+            if (grauPadraoValor == -1) {
+                grauPadraoValor = contadorValor;
+            }
+            else if (contador != grauPadraoContagem || contadorValor != grauPadraoValor) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     private boolean ehGrafo() {
         int numVertices = vertices.length;
         for (int i = 0; i < numVertices; i++) {
             Lista lista = listas.get(i);
-            No atual = lista.getInicio();
+            No atual = lista.getInicio().getProx();
             while (atual != null) {
                 int j = encontrarIndiceVertice(atual.getInfo());
-                if (!existeConexao(listas.get(j), vertices[i].charAt(0))) {
-                    return false; // Dígrafo detectado
+                if (valorConexao(listas.get(j), vertices[i].charAt(0)) == 0) {
+                    return false;
                 }
                 atual = atual.getProx();
             }
@@ -113,15 +143,15 @@ public class ConjuntoDeListas {
         return true;
     }
 
-    private boolean existeConexao(Lista lista, char vertice) {
+    private int valorConexao(Lista lista, char vertice) {
         No atual = lista.getInicio();
         while (atual != null) {
             if (atual.getInfo() == vertice) {
-                return true;
+                return atual.getValor();
             }
             atual = atual.getProx();
         }
-        return false;
+        return 0;
     }
 
     public void analise() {
@@ -130,6 +160,12 @@ public class ConjuntoDeListas {
         System.out.println("É " + (ehGrafo() ? "grafo" : "dígrafo"));
         System.out.println("É simples: " + (ehSimples() ? "sim" : "não"));
         System.out.println("É completo: " + (ehCompleto() ? "sim" : "não"));
-        System.out.println("É regular: " + (ehRegularOrigem() ? "sim" : "não"));
+        if (ehGrafo()) {
+            System.out.println("É regular: " + (ehRegularDestino() ? "sim" : "não"));
+        }
+        else {
+            System.out.println("É regular de origem: " + (ehRegularOrigem() ? "sim" : "não"));
+            System.out.println("É regular de destino: " + (ehRegularDestino() ? "sim" : "não"));
+        }
     }
 }

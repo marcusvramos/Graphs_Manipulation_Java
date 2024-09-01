@@ -10,8 +10,10 @@ public class Arquivo {
     private final BufferedReader br;
     private String[] vertices;
 
-    public Arquivo(String caminho) throws FileNotFoundException {
-        this.br = new BufferedReader(new FileReader(caminho));
+    public Arquivo() {
+        InputStream inputStream = getClass().getResourceAsStream("/matriz.txt");
+        assert inputStream != null;
+        this.br = new BufferedReader(new InputStreamReader(inputStream));
     }
 
     public MatrizAdjacencia lerArquivoParaMatriz() {
@@ -51,12 +53,10 @@ public class Arquivo {
 
         for (int i = 0; i < numVertices; i++) {
             Lista lista = new Lista();
+            lista.setInicio(vertices[i].charAt(0), matrizAdjacencia[i][i]);
             for (int j = 0; j < numVertices; j++) {
-                if (matrizAdjacencia[i][j] == 1) {
-                    if (lista.getInicio() == null) {
-                        lista.setInicio(vertices[i].charAt(0));
-                    }
-                    lista.inserir(vertices[j].charAt(0));
+                if (matrizAdjacencia[i][j] != 0) {
+                    lista.inserir(vertices[j].charAt(0), matrizAdjacencia[i][j]);
                 }
             }
             listaAdjacencia.add(lista);

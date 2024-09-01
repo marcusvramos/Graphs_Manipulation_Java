@@ -43,12 +43,10 @@ public class MatrizAdjacencia {
 
         for (int i = 0; i < vertices.length; i++) {
             Lista lista = new Lista();
+            lista.setInicio(vertices[i].charAt(0), matrizAdjacencia[i][i]);
             for (int j = 0; j < vertices.length; j++) {
-                if (matrizAdjacencia[i][j] == 1) {
-                    if (lista.getInicio() == null) {
-                        lista.setInicio(vertices[i].charAt(0));
-                    }
-                    lista.inserir(vertices[j].charAt(0));
+                if (matrizAdjacencia[i][j] != 0) {
+                    lista.inserir(vertices[j].charAt(0), matrizAdjacencia[i][j]);
                 }
             }
             listaAdjacencia.add(lista);
@@ -59,7 +57,7 @@ public class MatrizAdjacencia {
 
     private boolean ehSimples(){
         for (int i = 0; i<matrizAdjacencia.length; i++){
-            if(matrizAdjacencia[i][i] == 1){
+            if(matrizAdjacencia[i][i] != 0){
                 return false;
             }
         }
@@ -73,18 +71,20 @@ public class MatrizAdjacencia {
         }
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j <tamanho; j++) {
-                if(i!=j && matrizAdjacencia[i][j] != 1)
+                if(i!=j && matrizAdjacencia[i][j] == 0)
                     return false;
             }
         }
         return true;
     }
 
-    private boolean ehRegularOrigem(){
+    private boolean ehRegularOrigem() {
         int soma = 0, comparacao = -1;
         for (int[] ints : matrizAdjacencia) {
             for (int j = 0; j < matrizAdjacencia.length; j++) {
-                soma += ints[j];
+                if (ints[j] != 0) {
+                    soma += ints[j];
+                }
             }
             if (comparacao == -1) {
                 comparacao = soma;
@@ -98,11 +98,14 @@ public class MatrizAdjacencia {
         return true;
     }
 
-    private boolean ehRegularDestino(){
+
+    private boolean ehRegularDestino() {
         int soma = 0, comparacao = -1;
         for (int i = 0; i < matrizAdjacencia.length; i++) {
             for (int[] ints : matrizAdjacencia) {
-                soma += ints[i];
+                if (ints[i] != 0) {
+                    soma += ints[i];
+                }
             }
             if (comparacao == -1) {
                 comparacao = soma;
@@ -115,11 +118,12 @@ public class MatrizAdjacencia {
         }
         return true;
     }
+
 
     private boolean ehGrafo(){
         for (int i = 0; i < matrizAdjacencia.length; i++) {
             for (int j = 0; j < matrizAdjacencia.length; j++) {
-                if(matrizAdjacencia[i][j] == 1){
+                if(matrizAdjacencia[i][j] != 0){
                     if(matrizAdjacencia[j][i] == 0)
                         return false;
                 }

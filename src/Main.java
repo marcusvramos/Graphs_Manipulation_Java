@@ -3,6 +3,7 @@ import Lista.ConjuntoDeListas;
 import Lista.Lista;
 import MatrizAdjacencia.MatrizAdjacencia;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -38,8 +39,8 @@ public class Main {
         scanner.close();
     }
 
-    private static Arquivo reabrirArquivo() throws IOException {
-        return new Arquivo("/home/marcus/Documentos/Teoria dos Grafos/Trabalho 01/src/matriz.txt");
+    private static Arquivo reabrirArquivo() {
+        return new Arquivo();
     }
 
     private static int lerEscolhaDoUsuario(Scanner scanner) {

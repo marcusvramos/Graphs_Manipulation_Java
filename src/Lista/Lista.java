@@ -7,8 +7,8 @@ public class Lista {
         this.inicio = null;
     }
 
-    public void inserir(char info) {
-        No novoNo = new No(info);
+    public void inserir(char info, int valor) {
+        No novoNo = new No(info, valor);
         if (inicio == null) {
             inicio = novoNo;
         } else {
@@ -24,14 +24,14 @@ public class Lista {
         return inicio;
     }
 
-    public void setInicio(char info) {
-        inicio = new No(info);
+    public void setInicio(char info, int valor) {
+        inicio = new No(info, valor);
     }
 
     public void imprimir() {
         No atual = inicio;
         while (atual != null) {
-            System.out.print(atual.getInfo());
+            System.out.print(atual.getInfo() + "(" + atual.getValor() + ")");
             if (atual.getProx() != null) {
                 System.out.print(" -> ");
             }
