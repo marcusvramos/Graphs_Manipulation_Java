@@ -1,11 +1,12 @@
 import Arquivo.Arquivo;
+import Articulacao.Articulacao;
 import Lista.ConjuntoDeListas;
 import Lista.Lista;
 import MatrizAdjacencia.MatrizAdjacencia;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -70,13 +71,16 @@ public class Main {
                 System.out.println("Lista de Adjacência gerada a partir da Matriz:");
                 lista.forEach(Lista::imprimir);
                 break;
+            case 3:
+                identificarArticulacaoMatriz(matriz);
+                break;
             default:
                 System.out.println("Opção inválida. Retornando ao menu principal.");
         }
     }
 
     private static int lerEscolhaMatriz(Scanner scanner) {
-        System.out.print("Você deseja (1) Analisar a Matriz ou (2) Transformar a Matriz em Lista de Adjacência? Digite 1 ou 2: ");
+        System.out.print("Você deseja\n(1) Analisar a Matriz\n(2) Transformar a Matriz em Lista de Adjacência\n(3) Identificar Pontos de Articulação\nDigite 1, 2 ou 3: ");
         return scanner.nextInt();
     }
 
@@ -99,13 +103,16 @@ public class Main {
                 System.out.println("Matriz de Adjacência gerada a partir da Lista:");
                 System.out.println(matriz.toString());
                 break;
+            case 3:
+                identificarArticulacaoLista(conjunto);
+                break;
             default:
                 System.out.println("Opção inválida. Retornando ao menu principal.");
         }
     }
 
     private static int lerEscolhaLista(Scanner scanner) {
-        System.out.print("Você deseja (1) Analisar a Lista  ou (2) Transformar a Lista em Matriz de Adjacência? Digite 1 ou 2: ");
+        System.out.print("Você deseja:\n(1) Analisar a Lista\n(2) Transformar a Lista em Matriz de Adjacência\n(3) Identificar Pontos de Articulação\nDigite 1, 2 ou 3: ");
         return scanner.nextInt();
     }
 
@@ -117,5 +124,20 @@ public class Main {
     private static void analisarLista(ConjuntoDeListas conjunto) {
         System.out.println("Análise da Lista de Adjacência:");
         conjunto.analise();
+    }
+
+    private static void identificarArticulacaoMatriz(MatrizAdjacencia matriz) {
+        Articulacao articulacao = new Articulacao(matriz);
+        List<String> pontos = articulacao.getPontosDeArticulacao();
+        if (pontos.isEmpty()) {
+            System.out.println("Não há pontos de articulação no grafo.");
+        } else {
+            System.out.println("Pontos de articulação encontrados: " + pontos);
+        }
+    }
+
+    private static void identificarArticulacaoLista(ConjuntoDeListas conjunto) {
+        MatrizAdjacencia matriz = conjunto.transformarEmMatriz();
+        identificarArticulacaoMatriz(matriz);
     }
 }

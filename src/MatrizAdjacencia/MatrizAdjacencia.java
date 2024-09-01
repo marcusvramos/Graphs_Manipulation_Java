@@ -13,6 +13,14 @@ public class MatrizAdjacencia {
         this.matrizAdjacencia = matrizAdjacencia;
     }
 
+    public String[] getVertices() {
+        return vertices;
+    }
+
+    public int[][] getMatrizAdjacencia() {
+        return matrizAdjacencia;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
