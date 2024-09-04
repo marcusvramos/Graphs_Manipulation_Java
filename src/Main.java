@@ -128,12 +128,6 @@ public class Main {
 
     private static void identificarArticulacaoMatriz(MatrizAdjacencia matriz) {
         Articulacao articulacao = new Articulacao(matriz);
-        List<String> pontos = articulacao.getPontosDeArticulacao();
-        if (pontos.isEmpty()) {
-            System.out.println("Não há pontos de articulação no grafo.");
-        } else {
-            System.out.println("Pontos de articulação encontrados: " + pontos);
-        }
     }
 
     private static void identificarArticulacaoLista(ConjuntoDeListas conjunto) {
