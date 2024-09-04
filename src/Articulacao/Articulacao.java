@@ -85,9 +85,18 @@ public class Articulacao {
         System.out.printf("%-8s| %-8s| %-8s| %-24s\n", "Vértice", "Prenum", "Menor", "Ponto de Articulação");
         System.out.println("--------|---------|---------|------------------------");
 
+        boolean temArticulacao = false;
+
         for (int i = 0; i < n; i++) {
             String ehPontoDeArticulacao = ehArticulacao[i] ? ANSI_RED + "Sim" + ANSI_RESET : ANSI_GREEN + "Não" + ANSI_RESET;
+            if (ehArticulacao[i]) {
+                temArticulacao = true;
+            }
             System.out.printf(ANSI_RESET + "%-8s| %-8d| %-8d| %-24s\n" + ANSI_RESET, vertices[i].toUpperCase(), prenum[i] + 1, menor[i] + 1, ehPontoDeArticulacao);
+        }
+
+        if (!temArticulacao) {
+            System.out.println(ANSI_GREEN + "\nO Grafo é Biconexo: não há pontos de articulação!" + ANSI_RESET);
         }
     }
 }
