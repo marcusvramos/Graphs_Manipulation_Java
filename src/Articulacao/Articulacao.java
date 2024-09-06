@@ -20,8 +20,8 @@ public class Articulacao {
     private final String[] vertices;
     private int contador;
     private final List<Integer>[] adj;
-    private final Map<String, List<String>> arvoreDFS;  // Armazena a árvore DFS
-    private final List<String> arestasRetorno; // Arestas de retorno (pontilhadas)
+    private final Map<String, List<String>> arvoreDFS;
+    private final List<String> arestasRetorno; // pontilhadas
 
     public Articulacao(MatrizAdjacencia matriz) {
         int n = matriz.getVertices().length;
@@ -31,11 +31,10 @@ public class Articulacao {
         ehArticulacao = new boolean[n];
         vertices = matriz.getVertices();
         adj = new ArrayList[n];
-        arvoreDFS = new HashMap<>();  // Inicializa a árvore DFS
-        arestasRetorno = new ArrayList<>(); // Inicializa a lista de arestas de retorno
+        arvoreDFS = new HashMap<>();
+        arestasRetorno = new ArrayList<>();
         contador = 0;
 
-        // Inicializa cada lista de adjacência
         for (int i = 0; i < n; i++) {
             adj[i] = new ArrayList<>();
         }
@@ -52,9 +51,8 @@ public class Articulacao {
 
         for (int v = 0; v < n; v++) {
             if (!visitado[v]) {
-                // Inicializa a raiz da DFS na árvore
                 arvoreDFS.put(vertices[v].toUpperCase(), new ArrayList<>());
-                dfs(v, -1);
+                buscaEmProfundidade(v, -1);
             }
         }
 
@@ -62,13 +60,13 @@ public class Articulacao {
         exibirTabelaResultados(n);
     }
 
-    private void dfs(int v, int pai) {
+    private void buscaEmProfundidade(int v, int pai) {
         visitado[v] = true;
         prenum[v] = menor[v] = contador++;
         int filhos = 0;
         boolean ehPontoDeArticulacao = false;
 
-        // Se não é a raiz, adiciona o vértice atual à árvore DFS
+       // Se não for raiz eu adiciono na árvore DFS
         if (pai != -1) {
             String paiStr = vertices[pai].toUpperCase();
             String verticeAtual = vertices[v].toUpperCase();
@@ -81,7 +79,7 @@ public class Articulacao {
         for (int w : adj[v]) {
             if (!visitado[w]) {
                 filhos++;
-                dfs(w, v);
+                buscaEmProfundidade(w, v);
 
                 // Atualiza menor[v] com o menor valor entre menor[v] e menor[w]
                 menor[v] = Math.min(menor[v], menor[w]);
@@ -90,7 +88,6 @@ public class Articulacao {
                     ehPontoDeArticulacao = true;
                 }
             } else if (w != pai) { // Se w já foi visitado e não é o pai de v
-                // Adiciona a aresta de retorno à lista
                 String arestaRetorno = vertices[v].toUpperCase() + " -> " + vertices[w].toUpperCase();
                 arestasRetorno.add(arestaRetorno);
 
