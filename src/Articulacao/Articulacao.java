@@ -75,7 +75,7 @@ public class Articulacao {
 
             // Verifica se a lista de filhos do pai já existe, se não, inicializa
             arvoreDFS.putIfAbsent(paiStr, new ArrayList<>());
-            arvoreDFS.get(paiStr).add(verticeAtual);  // Adiciona o vértice atual como filho do pai
+            arvoreDFS.get(paiStr).add(verticeAtual);
         }
 
         for (int w : adj[v]) {
