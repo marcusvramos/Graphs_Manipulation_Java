@@ -2,13 +2,16 @@ package Articulacao;
 
 import MatrizAdjacencia.MatrizAdjacencia;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Articulacao {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_GREEN = "\u001B[32m";
     private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
 
     private final int[] prenum;
     private final int[] menor;
@@ -17,6 +20,8 @@ public class Articulacao {
     private final String[] vertices;
     private int contador;
     private final List<Integer>[] adj;
+    private final Map<String, List<String>> arvoreDFS;  // Armazena a árvore DFS
+    private final List<String> arestasRetorno; // Arestas de retorno (pontilhadas)
 
     public Articulacao(MatrizAdjacencia matriz) {
         int n = matriz.getVertices().length;
@@ -26,6 +31,8 @@ public class Articulacao {
         ehArticulacao = new boolean[n];
         vertices = matriz.getVertices();
         adj = new ArrayList[n];
+        arvoreDFS = new HashMap<>();  // Inicializa a árvore DFS
+        arestasRetorno = new ArrayList<>(); // Inicializa a lista de arestas de retorno
         contador = 0;
 
         // Inicializa cada lista de adjacência
@@ -45,10 +52,13 @@ public class Articulacao {
 
         for (int v = 0; v < n; v++) {
             if (!visitado[v]) {
+                // Inicializa a raiz da DFS na árvore
+                arvoreDFS.put(vertices[v].toUpperCase(), new ArrayList<>());
                 dfs(v, -1);
             }
         }
 
+        exibirArvoreDFS();
         exibirTabelaResultados(n);
     }
 
@@ -57,6 +67,16 @@ public class Articulacao {
         prenum[v] = menor[v] = contador++;
         int filhos = 0;
         boolean ehPontoDeArticulacao = false;
+
+        // Se não é a raiz, adiciona o vértice atual à árvore DFS
+        if (pai != -1) {
+            String paiStr = vertices[pai].toUpperCase();
+            String verticeAtual = vertices[v].toUpperCase();
+
+            // Verifica se a lista de filhos do pai já existe, se não, inicializa
+            arvoreDFS.putIfAbsent(paiStr, new ArrayList<>());
+            arvoreDFS.get(paiStr).add(verticeAtual);  // Adiciona o vértice atual como filho do pai
+        }
 
         for (int w : adj[v]) {
             if (!visitado[w]) {
@@ -70,6 +90,11 @@ public class Articulacao {
                     ehPontoDeArticulacao = true;
                 }
             } else if (w != pai) { // Se w já foi visitado e não é o pai de v
+                // Adiciona a aresta de retorno à lista
+                String arestaRetorno = vertices[v].toUpperCase() + " -> " + vertices[w].toUpperCase();
+                arestasRetorno.add(arestaRetorno);
+
+                // Atualiza o menor valor
                 menor[v] = Math.min(menor[v], prenum[w]);
             }
         }
@@ -97,6 +122,21 @@ public class Articulacao {
 
         if (!temArticulacao) {
             System.out.println(ANSI_GREEN + "\nO Grafo é Biconexo: não há pontos de articulação!" + ANSI_RESET);
+        }
+    }
+
+    private void exibirArvoreDFS() {
+        System.out.println("\n" + ANSI_CYAN + "Árvore de Busca em Profundidade (DFS):" + ANSI_RESET);
+        for (String pai : arvoreDFS.keySet()) {
+            List<String> filhos = arvoreDFS.get(pai);
+            System.out.println(ANSI_GREEN + pai + ANSI_RESET + " -> " + filhos);
+        }
+
+        if (!arestasRetorno.isEmpty()) {
+            System.out.println("\n" + ANSI_YELLOW + "Arestas de Retorno (linhas pontilhadas):" + ANSI_RESET);
+            for (String aresta : arestasRetorno) {
+                System.out.println(ANSI_YELLOW + aresta + ANSI_RESET);
+            }
         }
     }
 }
