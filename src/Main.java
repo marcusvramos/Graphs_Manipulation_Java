@@ -4,6 +4,7 @@ import Lista.ConjuntoDeListas;
 import Lista.Lista;
 import MatrizAdjacencia.MatrizAdjacencia;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -39,8 +40,10 @@ public class Main {
         scanner.close();
     }
 
-    private static Arquivo reabrirArquivo() {
-        return new Arquivo();
+    private static Arquivo reabrirArquivo() throws FileNotFoundException {
+        return new Arquivo(
+            "/home/marcus/Documentos/Faculdade/Teoria dos Grafos/Trabalho de Grafos - MarcusRamos e GuilhermeCamargo/graphs_adjacency-matrix/src/resources/matriz.txt"
+        );
     }
 
     private static int lerEscolhaDoUsuario(Scanner scanner) {

@@ -10,10 +10,13 @@ public class Arquivo {
     private final BufferedReader br;
     private String[] vertices;
 
-    public Arquivo() {
-        InputStream inputStream = getClass().getResourceAsStream("/matriz.txt");
-        assert inputStream != null;
-        this.br = new BufferedReader(new InputStreamReader(inputStream));
+    public Arquivo(String caminho) throws FileNotFoundException {
+        File file = new File(caminho);
+        if (!file.exists()) {
+            throw new RuntimeException("O arquivo não foi encontrado.");
+        }
+        FileInputStream fis = new FileInputStream(file);
+        this.br = new BufferedReader(new InputStreamReader(fis));
     }
 
     public MatrizAdjacencia lerArquivoParaMatriz() {
